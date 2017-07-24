@@ -11,9 +11,14 @@ CREATE TABLE `participants` (
 DROP TABLE IF EXISTS `venue`;
 CREATE TABLE `venue` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `venue_name` varchar(255) DEFAULT NULL
+  `location_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
 
 DROP TABLE IF EXISTS `event_type`;
 CREATE TABLE `event_type` (
@@ -29,6 +34,7 @@ CREATE TABLE `event` (
   `event_start_dt` datetime,
   `event_end_dt` datetime,
   `event_venue_id` int(11),
+  `title` text,
   `description` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
