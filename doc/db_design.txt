@@ -1,0 +1,26 @@
+create table participants (
+id int not null primary key,
+name varchar(255),
+) type=InnoDB;
+
+create table venue (
+id int not null primary key,
+name varchar(255),
+) type=InnoDB;
+
+Event_type
+int id
+text type
+
+Event
+int id
+datetime date
+datetime time
+int event_type
+int venue_id
+text description
+
+Event_Participants
+int event_id
+int participant_id
+int is_moderator
