@@ -53,6 +53,12 @@ foreach my $table (@tables) {
 
     my %hash = zip @cols, @new_cells;
 
+    # add a few fields that are constant across all gaming events to fit with the master spreadsheet
+    $hash{'venue'} = "Biltmore";
+    $hash{'event_type'} = "Game";
+    $hash{'description'} = " ";
+    $hash{'access'} = " ";
+    
     push @{$games_ar}, \%hash;
 
   }
