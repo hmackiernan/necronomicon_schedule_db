@@ -4,7 +4,16 @@ use HTML::TreeBuilder;
 use HTML::Element;
 use Data::Dumper;
 use HTML::Entities;
+use List::MoreUtils qw(zip);
 
+my $days_hr = {
+	       "WEDNESDAY" => "Wednesday, 16 August 2017",
+	       "THURSDAY" => "Thursday, 17 August 2017",
+	       "FRIDAY" => "Friday, 18 August 2017",
+	       "SATURDAY" => "Saturday, 19 August 2017",
+	       "SUNDAY" => "Sunday, 20 August 2017",
+	       
+	      };
 
 my $tree = HTML::TreeBuilder->new_from_content(<DATA>);
 
@@ -13,30 +22,43 @@ my $tree = HTML::TreeBuilder->new_from_content(<DATA>);
 my @tables = $tree->look_down(_tag => "table");
 
 my @lines;
-foreach my $table (@tables) {
+my @cols = qw(start_date start_time end_date end_time participant title location);
+my $games_ar;
 
+foreach my $table (@tables) {
+  my $row_hr;
+  
   my @rows = $table->look_down(_tag=>"tr");
 
   my $first_row = shift(@rows);
   
   my @first_cells = $first_row->look_down(_tag=>"td");
   my $day = $first_cells[0]->as_text;
+  $day = $days_hr->{$day};
   
   foreach my $row (@rows) {
     my @cells = $row->look_down(_tag=>"td");
-    my @new_cells =  map {$_->as_text . ","} @cells;
+    my @new_cells =  map {$_->as_text } @cells;
     my $times = shift @new_cells;
 
     my @start_end =  split/-/,  $times;
-    @start_end =     map {$day . " " . $_} @start_end;
+    my @start_dt_end_dt;
+    push @start_dt_end_dt, $day;
+    push @start_dt_end_dt, $start_end[0];
+    push @start_dt_end_dt, $day;
+    push @start_dt_end_dt, $start_end[1];
 
-    unshift  @new_cells, @start_end;
-    @new_cells =     map  {&clean($_) } @new_cells;
-    push @lines, join(",",@new_cells);
+
+    unshift  @new_cells, @start_dt_end_dt;
+
+    my %hash = zip @cols, @new_cells;
+
+    push @{$games_ar}, \%hash;
+
   }
 
 }
-print Dumper(\@lines);
+print Dumper($games_ar);
 
 sub clean {
   my $str = shift;
