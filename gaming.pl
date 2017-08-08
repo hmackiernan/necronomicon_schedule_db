@@ -22,7 +22,7 @@ my $tree = HTML::TreeBuilder->new_from_content(<DATA>);
 my @tables = $tree->look_down(_tag => "table");
 
 my @lines;
-my @cols = qw(start_date start_time end_date end_time participant title location);
+my @cols = qw(start_date start_time end_date end_time participants title location);
 my $games_ar;
 
 foreach my $table (@tables) {
